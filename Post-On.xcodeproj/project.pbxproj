@@ -45,7 +45,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		B3EA85552D36462700372790 /* Exceptions for "Post-On" folder in "Post-On" target */ = {
+		B3EA88C82D37533D00372790 /* Exceptions for "Post-On" folder in "Post-On" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -55,14 +55,6 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B3EA852F2D36462300372790 /* Post-On */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				B3EA85552D36462700372790 /* Exceptions for "Post-On" folder in "Post-On" target */,
-			);
-			path = "Post-On";
-			sourceTree = "<group>";
-		};
 		B3EA85462D36462700372790 /* Post-OnTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Post-OnTests";
@@ -71,6 +63,14 @@
 		B3EA85502D36462700372790 /* Post-OnUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Post-OnUITests";
+			sourceTree = "<group>";
+		};
+		B3EA88B32D37533C00372790 /* Post-On */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B3EA88C82D37533D00372790 /* Exceptions for "Post-On" folder in "Post-On" target */,
+			);
+			path = "Post-On";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -129,7 +129,7 @@
 		B3EA85242D36462300372790 = {
 			isa = PBXGroup;
 			children = (
-				B3EA852F2D36462300372790 /* Post-On */,
+				B3EA88B32D37533C00372790 /* Post-On */,
 				B3EA85462D36462700372790 /* Post-OnTests */,
 				B3EA85502D36462700372790 /* Post-OnUITests */,
 				B3EA852E2D36462300372790 /* Products */,
@@ -166,7 +166,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				B3EA852F2D36462300372790 /* Post-On */,
+				B3EA88B32D37533C00372790 /* Post-On */,
 			);
 			name = "Post-On";
 			productName = "Post-On";

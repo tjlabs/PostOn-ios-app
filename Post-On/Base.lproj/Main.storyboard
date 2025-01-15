@@ -19,6 +19,9 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_bottom_waves" translatesAutoresizingMaskIntoConstraints="NO" id="hVZ-KK-Lcc">
                                 <rect key="frame" x="0.0" y="739" width="393" height="113"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="113" id="0pL-Zr-AHx"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -30,6 +33,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Oxz-fm-0Ft"/>
+                    <connections>
+                        <outlet property="imgViewBottomWaves" destination="hVZ-KK-Lcc" id="eWI-5W-gfy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
