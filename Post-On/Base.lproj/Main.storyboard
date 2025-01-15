@@ -9,52 +9,21 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Initial View Controller-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController storyboardIdentifier="InitialViewController" id="BYZ-38-t0r" customClass="InitialViewController" customModule="Post_On" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_bottom_waves" translatesAutoresizingMaskIntoConstraints="NO" id="hVZ-KK-Lcc">
-                                <rect key="frame" x="0.0" y="739" width="393" height="113"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="113" id="0pL-Zr-AHx"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="hVZ-KK-Lcc" secondAttribute="bottom" id="YRl-y8-qpT"/>
-                            <constraint firstItem="hVZ-KK-Lcc" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="YXb-VS-Cje"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hVZ-KK-Lcc" secondAttribute="trailing" id="glO-oS-Du9"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="Oxz-fm-0Ft"/>
-                    <connections>
-                        <outlet property="imgViewBottomWaves" destination="hVZ-KK-Lcc" id="eWI-5W-gfy"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-234" y="-35"/>
-        </scene>
-        <!--View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="kp9-yx-874">
             <objects>
-                <viewController id="4L8-Bn-oif" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" id="4L8-Bn-oif" customClass="MainViewController" customModule="Post_On" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="m4W-PZ-S9U">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="mx9-e5-q2q"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="043-H2-gad"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fqL-7m-b50" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="595" y="-35"/>
+            <point key="canvasLocation" x="-193" y="-35"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mbR-tM-cmn">
@@ -65,7 +34,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="BgF-bv-fH3"/>
+                        <segue destination="4L8-Bn-oif" kind="relationship" relationship="rootViewController" id="KNu-7Q-QXP"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ixV-y3-XGn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -74,7 +43,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="img_bottom_waves" width="390" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
