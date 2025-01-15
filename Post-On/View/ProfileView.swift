@@ -7,16 +7,12 @@ import RxSwift
 import RxRelay
 import Then
 
-protocol ProfileViewDelegate: AnyObject {
-    func didTapDicisionButton(userProfile: UserProfile)
-}
 
 class ProfileView: UIView {
     static var userNickName = BehaviorRelay<String>(value: "")
     static var userProfileImage = BehaviorRelay<UIImage>(value: UIImage(named: "ic_profile_empty")!)
     
     private let disposeBag = DisposeBag()
-    weak var delegate: ProfileViewDelegate?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -64,10 +60,10 @@ class ProfileView: UIView {
     
     private let namePlaceholderLabel: UILabel = {
         let label = UILabel()
-        label.text = "닉네임"
+        label.text = "닉네임 (2-12자 이내, 특수문자 사용불가)"
         label.textAlignment = .left
         label.textColor = UIColor(hex: "#AAAAAA")
-        label.font = UIFont.lemonadaRegular(size: 16)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
     
@@ -79,13 +75,15 @@ class ProfileView: UIView {
         return textField
     }()
     
-    private let decisionButton: UIButton = {
-        let view = UIButton()
-        view.backgroundColor = UIColor(hex: "#333333")
-        view.layer.cornerRadius = 4
-        view.isUserInteractionEnabled = true
-        return view
-    }()
+    var dicisionButtonTapped: Observable<Void> {
+        return decisionButton.rx.tap.asObservable()
+    }
+    
+    private let decisionButton = UIButton().then {
+        $0.backgroundColor = UIColor(hex: "#333333")
+        $0.layer.cornerRadius = 4
+        $0.isUserInteractionEnabled = true
+    }
     
     private let decisionLabel: UILabel = {
         let label = UILabel()
@@ -217,9 +215,6 @@ class ProfileView: UIView {
             UIView.animate(withDuration: 0.1, animations: {
                 self.decisionButton.transform = CGAffineTransform.identity
             }) { _ in
-                if !ProfileView.userNickName.value.isEmpty {
-                    self.delegate?.didTapDicisionButton(userProfile: UserProfile(nickname: ProfileView.userNickName.value, profileImage: ProfileView.userProfileImage.value))
-                }
             }
         }
     }

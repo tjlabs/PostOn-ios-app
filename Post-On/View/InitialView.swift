@@ -6,12 +6,15 @@ import RxSwift
 import RxRelay
 
 class InitialView: UIView {
-
+    private let disposeBag = DisposeBag()
+    
     let profileView = ProfileView()
     private let bottomWavesImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
         $0.image = UIImage(named: "img_bottom_waves")
     }
+    
+    var onDicisionButtonTapped: (() -> Void)?
     
     init() {
         super.init(frame: .zero)
@@ -39,7 +42,10 @@ class InitialView: UIView {
     }
     
     private func bindActions() {
-        
+        profileView.dicisionButtonTapped
+            .subscribe(onNext: { [weak self] in
+                self?.onDicisionButtonTapped?()
+            }).disposed(by: disposeBag)
     }
 }
 
