@@ -177,21 +177,45 @@ class ProfileView: UIView {
     }
     
     func bindActions() {
-        // Observe userNickName and toggle infoLabel visibility
+        nameTextField.rx.text.orEmpty
+            .bind(to: ProfileView.userNickName)
+            .disposed(by: disposeBag)
+        
         ProfileView.userNickName
             .map { !$0.isEmpty }
             .bind(to: namePlaceholderLabel.rx.isHidden)
             .disposed(by: disposeBag)
-            
-        // Handle text field editing
-        nameTextField.rx.text.orEmpty
-            .bind(to: ProfileView.userNickName)
+        
+        ProfileView.userNickName
+            .subscribe(onNext: { [weak self] name in
+                self?.checkNameValidity(name: name)
+            })
             .disposed(by: disposeBag)
             
         // Dismiss keyboard on return key
         nameTextField.delegate = self
         setupKeyboardDismissal()
         setupButtonActions()
+    }
+    
+    private func checkNameValidity(name: String) {
+        let isValid = validateName(name)
+        if name.isEmpty {
+            nameContainerView.layer.borderColor = UIColor(hex: "#AAAAAA").cgColor
+        } else if isValid {
+            // Valid state
+            nameContainerView.layer.borderColor = UIColor.systemGreen.cgColor
+        } else {
+            // Invalid state
+            nameContainerView.layer.borderColor = UIColor.systemRed.cgColor
+        }
+    }
+        
+    private func validateName(_ name: String) -> Bool {
+        // 2-12 characters, no spaces or special characters
+        let regex = "^[a-zA-Z0-9가-힣]{2,12}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        return predicate.evaluate(with: name)
     }
     
     private func setupKeyboardDismissal() {
