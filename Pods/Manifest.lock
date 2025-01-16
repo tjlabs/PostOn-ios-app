@@ -1,4 +1,7 @@
 PODS:
+  - NMapsGeometry (1.0.2)
+  - NMapsMap (3.20.0):
+    - NMapsGeometry
   - RxCocoa (6.5.0):
     - RxRelay (= 6.5.0)
     - RxSwift (= 6.5.0)
@@ -9,6 +12,7 @@ PODS:
   - Then (3.0.0)
 
 DEPENDENCIES:
+  - NMapsMap
   - RxCocoa (~> 6.5.0)
   - RxSwift (~> 6.5.0)
   - SnapKit
@@ -16,6 +20,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - NMapsGeometry
+    - NMapsMap
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -23,12 +29,14 @@ SPEC REPOS:
     - Then
 
 SPEC CHECKSUMS:
+  NMapsGeometry: 4e02554fa9880ef02ed96b075dc84355d6352479
+  NMapsMap: bc5ea361ba29fc7c83dd8998f4497a77c75b4c66
   RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
   Then: 844265ae87834bbe1147d91d5d41a404da2ec27d
 
-PODFILE CHECKSUM: 986826493892ffcc8bc8e6d39166e4fb792908f1
+PODFILE CHECKSUM: 2f0ffbd45941b84fb8506277d8b74047e83df467
 
 COCOAPODS: 1.16.2
