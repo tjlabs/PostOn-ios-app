@@ -8,9 +8,14 @@ import RxRelay
 import Then
 
 
-class ProfileView: UIView {
+class ProfileView: UIView, ProfileImageSelectDelegate {
+    func didSelectProfileImage(imageName: String) {
+        print("didSelectProfileImage = \(imageName)")
+//        ProfileManager.shared.userProfile.imageName = imageName
+        profileImageView.image = UIImage(named: imageName)
+    }
+    
     static var userNickName = BehaviorRelay<String>(value: "")
-    static var userProfileImage = BehaviorRelay<UIImage>(value: UIImage(named: "ic_profile_empty")!)
     static var isValidNickname: Bool = false
     
     private let disposeBag = DisposeBag()
@@ -42,7 +47,6 @@ class ProfileView: UIView {
     
     private let profileImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "ic_profile_empty")
     }
     
     private let profileEditImageView = UIImageView().then {
@@ -103,6 +107,7 @@ class ProfileView: UIView {
     init(imageName: String) {
         super.init(frame: .zero)
         bottomWavesImageView.image = UIImage(named: imageName)!
+        setupProfile()
         setupLayout()
         bindActions()
     }
@@ -110,6 +115,20 @@ class ProfileView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func setupProfile() {
+        ProfileView.userNickName.accept(ProfileManager.shared.userProfile.nickname)
+        if !ProfileManager.shared.userProfile.imageName.isEmpty,
+           let image = UIImage(named: ProfileManager.shared.userProfile.imageName) {
+            ProfileImageSelectView.currentImageName = ProfileManager.shared.userProfile.imageName
+            profileImageView.image = image
+        } else {
+            ProfileImageSelectView.currentImageName = "ic_profile_empty"
+            profileImageView.image = UIImage(named: "ic_profile_empty")
+        }
+        
+    }
+
     
     func setupLayout() {
         // MARK: - Title
@@ -262,7 +281,7 @@ class ProfileView: UIView {
     
     @objc private func editProfileImageTapped() {
         let profileImageSelectView = ProfileImageSelectView(frame: frame)
-        
+        profileImageSelectView.delegate = self
         addSubview(profileImageSelectView)
         profileImageSelectView.snp.makeConstraints{ make in
             make.top.bottom.leading.trailing.equalToSuperview()

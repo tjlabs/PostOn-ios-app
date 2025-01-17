@@ -4,30 +4,36 @@ import SnapKit
 import RxCocoa
 import RxSwift
 import RxRelay
-import NMapsMap
 
 class MainViewController: UIViewController {
-    
-    var userProfile = UserProfile(nickname: "", profileImage: UIImage(named: "ic_profile_empty")!)
-    
     let initialView = InitialView()
     let mainView = MainView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
+        checkInitialUser()
         showInitView()
     }
     
     private func setupLayout() {
-//        let mapView = NMFMapView(frame: view.frame)
-//        view.addSubview(mapView)
-        
         view.addSubview(mainView)
         mainView.snp.makeConstraints { make in
             make.leading.trailing.top.bottom.equalToSuperview()
         }
         mainView.isHidden = true
+    }
+    
+    private func checkInitialUser() {
+        ProfileManager.shared.loadProfileFromCache()
+        if ProfileManager.shared.isLoadFromCache {
+            // 기존 사용자
+            print("Legacy User")
+        } else {
+            // 최초 사용자
+            print("Initial User")
+            ProfileManager.shared.setInitialProfile()
+        }
     }
     
     private func showInitView() {

@@ -7,11 +7,20 @@ import RxSwift
 import RxRelay
 import Then
 
+protocol ProfileImageSelectDelegate: AnyObject {
+    func didSelectProfileImage(imageName: String)
+}
 
 class ProfileImageSelectView: UIView, UICollectionViewDataSource, UICollectionViewDelegate {
     
     private let disposeBag = DisposeBag()
     var cellItemImageNames: [String] = ["ic_profile_empty"]
+    
+    static var currentImageName: String = ""
+    private var selectedImageName: String?
+    private var selectedIndex: IndexPath?
+
+    var delegate: ProfileImageSelectDelegate?
     
     private let backgroundView: UIView = {
         let view = UIView()
@@ -35,17 +44,6 @@ class ProfileImageSelectView: UIView, UICollectionViewDataSource, UICollectionVi
         label.font = UIFont.lemonadaSemiBold(size: 20)
         return label
     }()
-    
-    private let profileContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
-    }()
-    
-    private let profileImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "ic_profile_empty")
-    }
     
     var dicisionButtonTapped: Observable<Void> {
         return decisionButton.rx.tap.asObservable()
@@ -205,6 +203,10 @@ class ProfileImageSelectView: UIView, UICollectionViewDataSource, UICollectionVi
             }) { _ in
             }
         }
+        if let selectedImageName = self.selectedImageName {
+            ProfileImageSelectView.currentImageName = selectedImageName
+            self.delegate?.didSelectProfileImage(imageName: selectedImageName)
+        }
         removeFromSuperview()
     }
     
@@ -221,7 +223,36 @@ class ProfileImageSelectView: UIView, UICollectionViewDataSource, UICollectionVi
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileImageCell", for: indexPath) as! ProfileImageCell
         let index = indexPath.item
         let imageName = cellItemImageNames[index]
+        
         cell.configure(imageName: imageName)
+        cell.selectImageView.isHidden = imageName != ProfileImageSelectView.currentImageName
+        if !cell.selectImageView.isHidden {
+            selectedImageName = imageName
+            selectedIndex = indexPath
+        }
+        
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let previousIndex = selectedIndex,
+           let previousCell = collectionView.cellForItem(at: previousIndex) as? ProfileImageCell {
+            previousCell.selectImageView.isHidden = true
+        }
+
+        if let selectedCell = collectionView.cellForItem(at: indexPath) as? ProfileImageCell {
+            selectedCell.selectImageView.isHidden = false
+
+            UIView.animate(withDuration: 0.1, animations: {
+                selectedCell.transform = CGAffineTransform(scaleX: 0.96, y: 0.96)
+            }, completion: { _ in
+                UIView.animate(withDuration: 0.1) {
+                    selectedCell.transform = .identity
+                }
+            })
+
+            selectedImageName = cellItemImageNames[indexPath.item]
+            selectedIndex = indexPath
+        }
     }
 }

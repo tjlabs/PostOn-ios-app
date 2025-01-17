@@ -2,10 +2,10 @@ import UIKit
 
 struct UserProfile {
     var nickname: String = ""
-    var profileImage: UIImage = UIImage(named: "ic_profile_empty")!
+    var imageName: String = ""
     
-    init(nickname: String, profileImage: UIImage) {
+    init(nickname: String, imageName: String) {
         self.nickname = nickname
-        self.profileImage = profileImage
+        self.imageName = imageName
     }
 }
