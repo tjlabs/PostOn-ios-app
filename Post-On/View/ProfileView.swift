@@ -11,6 +11,7 @@ import Then
 class ProfileView: UIView {
     static var userNickName = BehaviorRelay<String>(value: "")
     static var userProfileImage = BehaviorRelay<UIImage>(value: UIImage(named: "ic_profile_empty")!)
+    static var isValidNickname: Bool = false
     
     private let disposeBag = DisposeBag()
     
@@ -209,6 +210,8 @@ class ProfileView: UIView {
             // Invalid state
             nameContainerView.layer.borderColor = UIColor.systemRed.cgColor
         }
+        
+        ProfileView.isValidNickname = isValid && !name.isEmpty ? true : false
     }
         
     private func validateName(_ name: String) -> Bool {

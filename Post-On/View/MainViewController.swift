@@ -22,6 +22,7 @@ class MainViewController: UIViewController {
     private func setupLayout() {
 //        let mapView = NMFMapView(frame: view.frame)
 //        view.addSubview(mapView)
+        
         view.addSubview(mainView)
         mainView.snp.makeConstraints { make in
             make.leading.trailing.top.bottom.equalToSuperview()
@@ -37,8 +38,9 @@ class MainViewController: UIViewController {
         
         initialView.onDicisionButtonTapped = { [weak self] in
             if let self = self {
-                print("Dicision Button Tapped")
-                self.transitionToMainView()
+                if ProfileView.isValidNickname {
+                    self.transitionToMainView()
+                }
             }
         }
     }
