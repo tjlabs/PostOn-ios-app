@@ -14,6 +14,7 @@ class ProfileView: UIView {
     static var isValidNickname: Bool = false
     
     private let disposeBag = DisposeBag()
+    private let profileImageSelectView = ProfileImageSelectView()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -96,8 +97,14 @@ class ProfileView: UIView {
         return label
     }()
     
-    init() {
+    private var bottomWavesImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+//        $0.image = UIImage(named: "img_bottom_waves")
+    }
+    
+    init(imageName: String) {
         super.init(frame: .zero)
+        bottomWavesImageView.image = UIImage(named: imageName)!
         setupLayout()
         bindActions()
     }
@@ -175,6 +182,13 @@ class ProfileView: UIView {
             make.centerX.centerY.equalToSuperview()
             make.leading.trailing.top.bottom.equalToSuperview()
         }
+        
+        addSubview(bottomWavesImageView)
+        bottomWavesImageView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(10)
+            make.height.equalTo(130)
+        }
     }
     
     func bindActions() {
@@ -233,6 +247,8 @@ class ProfileView: UIView {
     
     func setupButtonActions() {
         decisionButton.addTarget(self, action: #selector(decisionButtonTapped), for: .touchUpInside)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(editProfileImageTapped))
+        profileContainerView.addGestureRecognizer(tapGesture)
     }
     
     @objc private func decisionButtonTapped() {
@@ -243,6 +259,13 @@ class ProfileView: UIView {
                 self.decisionButton.transform = CGAffineTransform.identity
             }) { _ in
             }
+        }
+    }
+    
+    @objc private func editProfileImageTapped() {
+        addSubview(profileImageSelectView)
+        profileImageSelectView.snp.makeConstraints{ make in
+            make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
 }

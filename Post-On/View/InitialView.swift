@@ -8,12 +8,7 @@ import RxRelay
 class InitialView: UIView {
     private let disposeBag = DisposeBag()
     
-    let profileView = ProfileView()
-    private let bottomWavesImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
-        $0.image = UIImage(named: "img_bottom_waves")
-    }
-    
+    let profileView = ProfileView(imageName: "img_bottom_waves")
     var onDicisionButtonTapped: (() -> Void)?
     
     init() {
@@ -27,17 +22,9 @@ class InitialView: UIView {
     }
     
     private func setupLayout() {
-        addSubview(bottomWavesImageView)
-        bottomWavesImageView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(10)
-            make.height.equalTo(130)
-        }
-        
         addSubview(profileView)
         profileView.snp.makeConstraints{ make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.equalTo(bottomWavesImageView.snp.top)
+            make.leading.trailing.top.bottom.equalToSuperview()
         }
     }
     
