@@ -89,7 +89,6 @@ class ProfileImageSelectView: UIView, UICollectionViewDataSource, UICollectionVi
     private var collectionView: UICollectionView?
     
     override init(frame: CGRect) {
-        print("ProfileImageSelect : frame W/H = \(frame.width) , \(frame.height)")
         super.init(frame: frame)
         calDynamicContainerHeight(w: frame.width, h: frame.height)
         makeCellItemImageNames()

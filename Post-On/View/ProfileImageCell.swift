@@ -21,9 +21,10 @@ class ProfileImageCell: UICollectionViewCell {
     }
     
     public var isSelectedState = false
-    
+    var selectImageSize: Int = 1
     override init(frame: CGRect) {
         super.init(frame: frame)
+        selectImageSize = Int(frame.width/3)
         setupLayout()
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cellTapped)))
     }
@@ -38,7 +39,12 @@ class ProfileImageCell: UICollectionViewCell {
             make.top.bottom.leading.trailing.equalToSuperview()
         }
         
+        let selectImageWidth = self.selectImageSize
         addSubview(selectImageView)
+        selectImageView.snp.makeConstraints{ make in
+            make.width.height.equalTo(selectImageWidth)
+            make.bottom.trailing.equalToSuperview().inset(2)
+        }
     }
     
     func configure(imageName: String) {
