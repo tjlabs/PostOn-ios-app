@@ -14,7 +14,6 @@ class ProfileView: UIView {
     static var isValidNickname: Bool = false
     
     private let disposeBag = DisposeBag()
-    private let profileImageSelectView = ProfileImageSelectView()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -99,7 +98,6 @@ class ProfileView: UIView {
     
     private var bottomWavesImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
-//        $0.image = UIImage(named: "img_bottom_waves")
     }
     
     init(imageName: String) {
@@ -263,6 +261,8 @@ class ProfileView: UIView {
     }
     
     @objc private func editProfileImageTapped() {
+        let profileImageSelectView = ProfileImageSelectView(frame: frame)
+        
         addSubview(profileImageSelectView)
         profileImageSelectView.snp.makeConstraints{ make in
             make.top.bottom.leading.trailing.equalToSuperview()
