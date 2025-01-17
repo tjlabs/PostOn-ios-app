@@ -13,7 +13,7 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         setupLayout()
         checkInitialUser()
-        showInitView()
+//        showInitView()
     }
     
     private func setupLayout() {
@@ -21,7 +21,7 @@ class MainViewController: UIViewController {
         mainView.snp.makeConstraints { make in
             make.leading.trailing.top.bottom.equalToSuperview()
         }
-        mainView.isHidden = true
+        mainView.isHidden = false
     }
     
     private func checkInitialUser() {
