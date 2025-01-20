@@ -46,7 +46,7 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
     }()
     
     private let profileImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleAspectFill
     }
     
     private let profileEditImageView = UIImageView().then {
@@ -101,7 +101,7 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
     }()
     
     private var bottomWavesImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
+        $0.contentMode = .scaleToFill
     }
     
     init(imageName: String) {
@@ -203,8 +203,8 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
         addSubview(bottomWavesImageView)
         bottomWavesImageView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().offset(10)
-            make.height.equalTo(130)
+            make.bottom.equalToSuperview().offset(0)
+            make.height.equalTo(110)
         }
     }
     

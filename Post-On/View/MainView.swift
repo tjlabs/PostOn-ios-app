@@ -16,6 +16,8 @@ class MainView: UIView {
     var navigationItems = [NavigationItem]()
     var navigationItemViews = [UIView]()
     
+    private let disposeBag = DisposeBag()
+    
     private let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -44,6 +46,13 @@ class MainView: UIView {
         stackView.spacing = 20
 //        stackView.backgroundColor = .systemMint
         return stackView
+    }()
+    
+    private var topView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.isHidden = true
+        return view
     }()
     
     init() {
@@ -91,9 +100,47 @@ class MainView: UIView {
         for view in self.navigationItemViews {
             bottomNavigationItemStackView.addArrangedSubview(view)
         }
+        
+        containerView.addSubview(topView)
+        topView.snp.makeConstraints{ make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(bottomNavigationView.snp.top)
+        }
     }
     
     private func bindActions() {
+        for (index, itemView) in navigationItemViews.enumerated() {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(navigationBarItemTapped(_:)))
+            itemView.tag = index // Set the tag for identification
+            itemView.addGestureRecognizer(tapGesture)
+            itemView.isUserInteractionEnabled = true
+        }
+    }
+        
+    @objc private func navigationBarItemTapped(_ sender: UITapGestureRecognizer) {
+        guard let tappedView = sender.view as? NavigationBarItem else { return }
+        handleNavigationAction(for: navigationItems[tappedView.tag].title)
+    }
+        
+    private func handleNavigationAction(for title: String) {
+        switch title {
+        case "Home":
+            print("Home tapped")
+            // Add logic for Home navigation here
+        case "Post-On":
+            print("Post-On tapped")
+            // Add logic for Post-On navigation here
+        case "Profile":
+            print("Profile tapped")
+            let profileView = ProfileView(imageName: "img_bottom_waves_v2")
+            topView.addSubview(profileView)
+            profileView.snp.makeConstraints { make in
+                make.top.bottom.leading.trailing.equalToSuperview()
+            }
+            topView.isHidden = false
+        default:
+            print("Unknown navigation item tapped")
+        }
     }
     
     private func makeNavigationBarItems() {
