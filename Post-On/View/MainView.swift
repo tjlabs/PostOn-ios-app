@@ -18,6 +18,7 @@ class MainView: UIView {
     
     private let disposeBag = DisposeBag()
     
+    // Subviews
     private let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -115,6 +116,12 @@ class MainView: UIView {
             itemView.addGestureRecognizer(tapGesture)
             itemView.isUserInteractionEnabled = true
         }
+        
+        // ProfileView
+//        profileView.dicisionButtonTapped
+//            .subscribe(onNext: { [weak self] in
+//                ProfileManager.shared.saveProfileToCache()
+//            }).disposed(by: disposeBag)
     }
         
     @objc private func navigationBarItemTapped(_ sender: UITapGestureRecognizer) {
@@ -131,16 +138,25 @@ class MainView: UIView {
             print("Post-On tapped")
             // Add logic for Post-On navigation here
         case "Profile":
-            print("Profile tapped")
-            let profileView = ProfileView(imageName: "img_bottom_waves_v2")
-            topView.addSubview(profileView)
-            profileView.snp.makeConstraints { make in
-                make.top.bottom.leading.trailing.equalToSuperview()
-            }
-            topView.isHidden = false
+            self.controlProfileView()
         default:
             print("Unknown navigation item tapped")
         }
+    }
+    
+    private func controlProfileView() {
+        let profileView = ProfileView(imageName: "img_bottom_waves_v2")
+        topView.addSubview(profileView)
+        profileView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        topView.isHidden = false
+        
+        profileView.dicisionButtonTapped
+            .subscribe(onNext: { [weak self] in
+                profileView.removeFromSuperview()
+                self?.topView.isHidden = true
+        }).disposed(by: disposeBag)
     }
     
     private func makeNavigationBarItems() {

@@ -11,7 +11,7 @@ import Then
 class ProfileView: UIView, ProfileImageSelectDelegate {
     func didSelectProfileImage(imageName: String) {
         print("didSelectProfileImage = \(imageName)")
-//        ProfileManager.shared.userProfile.imageName = imageName
+        ProfileManager.shared.userProfile.imageName = imageName
         profileImageView.image = UIImage(named: imageName)
     }
     
@@ -51,6 +51,7 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
     
     private let profileEditImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
+        $0.backgroundColor = .clear
         $0.image = UIImage(named: "ic_edit")
     }
     
@@ -82,6 +83,13 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
     
     var dicisionButtonTapped: Observable<Void> {
         return decisionButton.rx.tap.asObservable()
+            .do(onNext: { [weak self] in
+                guard let self = self else { return }
+                if ProfileView.isValidNickname {
+                    ProfileManager.shared.userProfile.nickname = self.nameTextField.text ?? ""
+                    ProfileManager.shared.saveProfileToCache()
+                }
+            })
     }
     
     private let decisionButton = UIButton().then {
@@ -117,6 +125,9 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
     }
 
     func setupProfile() {
+        if !ProfileManager.shared.userProfile.nickname.isEmpty {
+            self.nameTextField.text = ProfileManager.shared.userProfile.nickname
+        }
         ProfileView.userNickName.accept(ProfileManager.shared.userProfile.nickname)
         if !ProfileManager.shared.userProfile.imageName.isEmpty,
            let image = UIImage(named: ProfileManager.shared.userProfile.imageName) {
@@ -126,7 +137,7 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
             ProfileImageSelectView.currentImageName = "ic_profile_empty"
             profileImageView.image = UIImage(named: "ic_profile_empty")
         }
-        
+        print("setupProfile : \(ProfileManager.shared.userProfile)")
     }
 
     
@@ -209,6 +220,7 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
     }
     
     func bindActions() {
+        nameTextField.delegate = self
         nameTextField.rx.text.orEmpty
             .bind(to: ProfileView.userNickName)
             .disposed(by: disposeBag)
@@ -224,8 +236,6 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
             })
             .disposed(by: disposeBag)
             
-        // Dismiss keyboard on return key
-        nameTextField.delegate = self
         setupKeyboardDismissal()
         setupButtonActions()
     }

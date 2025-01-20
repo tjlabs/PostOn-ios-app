@@ -20,6 +20,7 @@ class ProfileManager {
         } else {
             isLoadFromCache = false
         }
+        print("ProfileManager (Load From Cahce) : userProfile = \(userProfile)")
     }
     
     func saveProfileToCache() {
@@ -27,6 +28,7 @@ class ProfileManager {
         defaults.set(userProfile.nickname, forKey: "PostOnProfileNickname")
         defaults.set(userProfile.imageName, forKey: "PostOnProfileImageName")
         
+        print("ProfileManager (Save To Cahce) : userProfile = \(userProfile)")
         defaults.synchronize()
     }
     
