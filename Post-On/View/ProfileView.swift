@@ -137,7 +137,6 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
             ProfileImageSelectView.currentImageName = "ic_profile_empty"
             profileImageView.image = UIImage(named: "ic_profile_empty")
         }
-        print("setupProfile : \(ProfileManager.shared.userProfile)")
     }
 
     

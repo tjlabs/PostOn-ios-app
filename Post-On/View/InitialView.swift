@@ -15,7 +15,6 @@ class InitialView: UIView {
         super.init(frame: .zero)
         setupLayout()
         bindActions()
-        print("IntialView")
     }
     
     required init?(coder: NSCoder) {

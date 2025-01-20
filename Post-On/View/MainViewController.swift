@@ -27,11 +27,9 @@ class MainViewController: UIViewController {
         ProfileManager.shared.loadProfileFromCache()
         if ProfileManager.shared.isLoadFromCache {
             // 기존 사용자
-            print("Legacy User")
             mainView.isHidden = false
         } else {
             // 최초 사용자
-            print("Initial User")
             ProfileManager.shared.setInitialProfile()
             showInitView()
         }
