@@ -16,7 +16,10 @@ class MainView: UIView {
     var navigationItems = [NavigationItem]()
     var navigationItemViews = [UIView]()
     
+    var profileView: ProfileView?
+    
     private let disposeBag = DisposeBag()
+    var currentViewName: String = ""
     
     // Subviews
     private let containerView: UIView = {
@@ -112,49 +115,67 @@ class MainView: UIView {
     private func bindActions() {
         for (index, itemView) in navigationItemViews.enumerated() {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(navigationBarItemTapped(_:)))
-            itemView.tag = index // Set the tag for identification
+            itemView.tag = index
             itemView.addGestureRecognizer(tapGesture)
             itemView.isUserInteractionEnabled = true
         }
-        
-        // ProfileView
-//        profileView.dicisionButtonTapped
-//            .subscribe(onNext: { [weak self] in
-//                ProfileManager.shared.saveProfileToCache()
-//            }).disposed(by: disposeBag)
     }
         
     @objc private func navigationBarItemTapped(_ sender: UITapGestureRecognizer) {
         guard let tappedView = sender.view as? NavigationBarItem else { return }
         handleNavigationAction(for: navigationItems[tappedView.tag].title)
     }
-        
+    
     private func handleNavigationAction(for title: String) {
-        switch title {
-        case "Home":
-            print("Home tapped")
-            // Add logic for Home navigation here
-        case "Post-On":
-            print("Post-On tapped")
-            // Add logic for Post-On navigation here
-        case "Profile":
-            self.controlProfileView()
-        default:
-            print("Unknown navigation item tapped")
+        if self.currentViewName != title {
+            switch title {
+            case "Home":
+                if currentViewName == "Post-On" {
+                    // Post-On -> Home
+                } else if currentViewName == "Profile" {
+                    // Profile -> Home
+                    self.topView.isHidden = true
+                    self.profileView?.removeFromSuperview()
+                }
+                updateNavigationBarItems(with: title)
+                print("Home tapped")
+            case "Post-On":
+                if currentViewName == "Home" {
+                    // Home -> Post-On
+                } else if currentViewName == "Profile" {
+                    // Profile -> Post-On
+                    self.topView.isHidden = true
+                    self.profileView?.removeFromSuperview()
+                }
+                updateNavigationBarItems(with: title)
+                print("Post-On tapped")
+            case "Profile":
+                if currentViewName == "Home" {
+                    // Home -> Profile
+                } else if currentViewName == "Post-On" {
+                    // Post-On -> Profile
+                }
+                updateNavigationBarItems(with: title)
+                self.controlProfileView()
+                print("Profile tapped")
+            default:
+                print("Unknown navigation item tapped")
+            }
+            self.currentViewName = title
         }
     }
     
     private func controlProfileView() {
-        let profileView = ProfileView(imageName: "img_bottom_waves_v2")
-        topView.addSubview(profileView)
-        profileView.snp.makeConstraints { make in
+        profileView = ProfileView(imageName: "img_bottom_waves_v2")
+        topView.addSubview(profileView!)
+        profileView!.snp.makeConstraints { make in
             make.top.bottom.leading.trailing.equalToSuperview()
         }
         topView.isHidden = false
         
-        profileView.dicisionButtonTapped
+        profileView!.dicisionButtonTapped
             .subscribe(onNext: { [weak self] in
-                profileView.removeFromSuperview()
+                self?.profileView!.removeFromSuperview()
                 self?.topView.isHidden = true
         }).disposed(by: disposeBag)
     }
@@ -168,10 +189,28 @@ class MainView: UIView {
             navigationItemViews.append(NavigationBarItem(title: item.title, imageName: item.imageName))
         }
     }
+    
+    private func updateNavigationBarItems(with title: String) {
+        for (index, itemView) in navigationItemViews.enumerated() {
+            guard let navigationBarItem = itemView as? NavigationBarItem else { continue }
+            let currentImageName = navigationItems[index].imageName
+            if navigationItems[index].title == title {
+                let updatedImageName = currentImageName + "_fill"
+                navigationBarItem.updateImage(named: updatedImageName)
+            } else {
+                if currentImageName.contains("_fill") {
+                    let updatedImageName = currentImageName.replacingOccurrences(of: "_fill", with: "")
+                    navigationBarItem.updateImage(named: updatedImageName)
+                } else {
+                    navigationBarItem.updateImage(named: currentImageName)
+                }
+            }
+        }
+        bottomNavigationItemStackView.layoutIfNeeded()
+    }
 }
 
 class NavigationBarItem: UIView {
-    
     private var itemImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFit
     }
@@ -190,7 +229,6 @@ class NavigationBarItem: UIView {
         titleLabel.text = title
         itemImageView.image = UIImage(named: imageName)!
         setupLayout()
-        bindActions()
     }
     
     required init?(coder: NSCoder) {
@@ -216,7 +254,7 @@ class NavigationBarItem: UIView {
         }
     }
     
-    private func bindActions() {
-        
+    func updateImage(named imageName: String) {
+        itemImageView.image = UIImage(named: imageName)
     }
 }
