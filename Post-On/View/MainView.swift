@@ -188,6 +188,10 @@ class MainView: UIView {
         for item in navigationItems {
             navigationItemViews.append(NavigationBarItem(title: item.title, imageName: item.imageName))
         }
+        
+        // Set Initial View
+        self.currentViewName = "Home"
+        updateNavigationBarItems(with: self.currentViewName)
     }
     
     private func updateNavigationBarItems(with title: String) {
