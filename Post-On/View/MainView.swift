@@ -16,7 +16,7 @@ class MainView: UIView {
     var navigationItems = [NavigationItem]()
     var navigationItemViews = [UIView]()
     
-    var postOnView: PostOnView?
+    var postOnView = PostOnView()
     var profileView: ProfileView?
     
     private let disposeBag = DisposeBag()
@@ -49,7 +49,6 @@ class MainView: UIView {
         stackView.alignment = .center
         stackView.distribution = .fillEqually
         stackView.spacing = 20
-//        stackView.backgroundColor = .systemMint
         return stackView
     }()
     
@@ -80,6 +79,12 @@ class MainView: UIView {
         containerView.addSubview(mapView)
         mapView.snp.makeConstraints{ make in
             make.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        containerView.addSubview(postOnView)
+        postOnView.snp.makeConstraints{ make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.height.equalTo(50)
         }
         
         containerView.addSubview(bottomNavigationView)
@@ -171,12 +176,23 @@ class MainView: UIView {
     }
     // MARK: Control PostOnView
     private func controlPostOnView() {
-
+        postOnView.snp.updateConstraints { make in
+            make.height.equalTo(210)
+        }
+        UIView.animate(withDuration: 0.2) {
+            self.layoutIfNeeded()
+        }
     }
 
     private func closePostOnView() {
-
+        postOnView.snp.updateConstraints { make in
+            make.height.equalTo(50)
+        }
+        UIView.animate(withDuration: 0.2) {
+            self.layoutIfNeeded()
+        }
     }
+
     
     // MARK: Control ProfileView
     private func controlProfileView() {
