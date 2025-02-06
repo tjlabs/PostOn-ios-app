@@ -16,6 +16,7 @@ class MainView: UIView {
     var navigationItems = [NavigationItem]()
     var navigationItemViews = [UIView]()
     
+    var postOnView: PostOnView?
     var profileView: ProfileView?
     
     private let disposeBag = DisposeBag()
@@ -132,6 +133,7 @@ class MainView: UIView {
             case "Home":
                 if currentViewName == "Post-On" {
                     // Post-On -> Home
+                    closePostOnView()
                 } else if currentViewName == "Profile" {
                     // Profile -> Home
                     self.topView.isHidden = true
@@ -142,10 +144,12 @@ class MainView: UIView {
             case "Post-On":
                 if currentViewName == "Home" {
                     // Home -> Post-On
+                    controlPostOnView()
                 } else if currentViewName == "Profile" {
                     // Profile -> Post-On
                     self.topView.isHidden = true
                     self.profileView?.removeFromSuperview()
+                    controlPostOnView()
                 }
                 updateNavigationBarItems(with: title)
                 print("Post-On tapped")
@@ -154,6 +158,7 @@ class MainView: UIView {
                     // Home -> Profile
                 } else if currentViewName == "Post-On" {
                     // Post-On -> Profile
+                    closePostOnView()
                 }
                 updateNavigationBarItems(with: title)
                 self.controlProfileView()
@@ -164,7 +169,16 @@ class MainView: UIView {
             self.currentViewName = title
         }
     }
+    // MARK: Control PostOnView
+    private func controlPostOnView() {
+
+    }
+
+    private func closePostOnView() {
+
+    }
     
+    // MARK: Control ProfileView
     private func controlProfileView() {
         profileView = ProfileView(imageName: "img_bottom_waves_v2")
         topView.addSubview(profileView!)
