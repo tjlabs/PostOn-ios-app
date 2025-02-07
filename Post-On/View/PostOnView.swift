@@ -157,7 +157,7 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func updateSectorCellItemList() {
-        let item = SectorCellItem(title: "COEX", available: true, message: "wow", distance: 10, address: "Samsung-ro")
+        let item = SectorCellItem(title: "COEX", available: true, message: "입장 가능 여부", distance: 10, address: "Samsung-ro")
         self.sectorCellItemList.append(contentsOf: Array(repeating: item, count: 6))
         
         DispatchQueue.main.async {
