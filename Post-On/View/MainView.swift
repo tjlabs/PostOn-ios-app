@@ -177,11 +177,6 @@ class MainView: UIView {
     }
     // MARK: Control PostOnView
     private func controlPostOnView() {
-//        let screenHeight = UIScreen.main.bounds.height
-//        let normalHeight = max(0.4 * (screenHeight - 110), 210)
-//        postOnView.snp.updateConstraints { make in
-//            make.height.equalTo(normalHeight)
-//        }
         postOnView.setState(.normal)
         UIView.animate(withDuration: 0.2) {
             self.layoutIfNeeded()
@@ -189,9 +184,6 @@ class MainView: UIView {
     }
 
     private func closePostOnView() {
-//        postOnView.snp.updateConstraints { make in
-//            make.height.equalTo(100)
-//        }
         postOnView.setState(.closed)
         UIView.animate(withDuration: 0.2) {
             self.layoutIfNeeded()
@@ -207,7 +199,6 @@ class MainView: UIView {
             .disposed(by: disposeBag)
     }
         
-    // Handle PostOnView state changes
     private func handleStateChange(_ state: PostOnViewState) {
         switch state {
         case .expanded:
