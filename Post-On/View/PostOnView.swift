@@ -4,11 +4,7 @@ import RxCocoa
 import RxSwift
 import RxRelay
 
-enum PostOnViewState {
-    case expanded, closed, normal
-}
-
-class PostOnView: UIView {
+class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private let disposeBag = DisposeBag()
     
     let screenHeight = UIScreen.main.bounds.height
@@ -17,11 +13,13 @@ class PostOnView: UIView {
     let closedHeight: CGFloat = 100
     
     private var lastPanTranslation: CGFloat = 0
-
     private let stateRelay = BehaviorRelay<PostOnViewState>(value: .normal)
     var currentState: Observable<PostOnViewState> { stateRelay.asObservable() }
     
     let dragIndicatorSize = CGSize(width: UIScreen.main.bounds.width * 0.2, height: 5.0)
+    
+    // MARK: Collection View Cell
+    var sectorCellItemList = [SectorCellItem]()
     
     private var dragIndicatorView: UIView = {
         let view = UIView()
@@ -39,11 +37,29 @@ class PostOnView: UIView {
         return view
     }()
     
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        layout.scrollDirection = .vertical
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.collectionViewLayout = layout
+        collectionView.isPrefetchingEnabled = false
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(PostOnSectorCell.self, forCellWithReuseIdentifier: PostOnSectorCell.reuseIdentifier)
+        
+        return collectionView
+    }()
+    
     init() {
         self.expandedHeight = 0.8 * (screenHeight - 110)
         self.normalHeight = max(0.4 * (screenHeight - 110), 210)
         super.init(frame: .zero)
         self.isUserInteractionEnabled = true
+        updateSectorCellItemList()
         setupLayout()
         bindActions()
     }
@@ -63,6 +79,12 @@ class PostOnView: UIView {
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(5)
             make.size.equalTo(dragIndicatorSize)
+        }
+        
+        containerView.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(dragIndicatorView.snp.bottom).offset(5)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -132,5 +154,36 @@ class PostOnView: UIView {
         self.snp.updateConstraints { make in
             make.height.equalTo(height)
         }
+    }
+    
+    func updateSectorCellItemList() {
+        let item = SectorCellItem(title: "COEX", available: true, message: "wow", distance: 10, address: "Samsung-ro")
+        self.sectorCellItemList.append(contentsOf: Array(repeating: item, count: 6))
+        
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            self.collectionView.layoutIfNeeded()
+        }
+    }
+    
+    //MARK: CollectionView
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.sectorCellItemList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostOnSectorCell.reuseIdentifier, for: indexPath) as! PostOnSectorCell
+        let item = self.sectorCellItemList[indexPath.row]
+        cell.configure(data: item)
+        
+        return cell
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = collectionView.bounds.width
+        let height: CGFloat = 111
+//        print("(PostOnView) : cellSize = (\(width),\(height))")
+        return CGSize(width: width, height: height)
     }
 }
