@@ -8,20 +8,24 @@ enum PostOnViewState {
     case expanded, closed, normal
 }
 
+import RxRelay
+
 class PostOnView: UIView {
     private let disposeBag = DisposeBag()
     
     let screenHeight = UIScreen.main.bounds.height
     let expandedHeight: CGFloat
-    let normalHeight: CGFloat = 210
-    let closedHeight: CGFloat = 50
+    let normalHeight: CGFloat
+    let closedHeight: CGFloat = 100
     
-    private var currentState: PostOnViewState = .closed
-    private var heightConstraint: Constraint?
+    private var lastPanTranslation: CGFloat = 0
 
+    private let stateRelay = BehaviorRelay<PostOnViewState>(value: .normal)
+    var currentState: Observable<PostOnViewState> { stateRelay.asObservable() }
+    
     let dragIndicatorSize = CGSize(width: UIScreen.main.bounds.width * 0.2, height: 5.0)
     
-    private let dragIndicatorView: UIView = {
+    private var dragIndicatorView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 3
         view.backgroundColor = .darkGray
@@ -30,18 +34,18 @@ class PostOnView: UIView {
     
     var containerView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 12
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 4
-        view.layer.shadowOffset = CGSize(width: 0, height: 15)
-        view.layer.shadowRadius = 4
+        view.layer.cornerRadius = 14
+        view.layer.shadowColor = UIColor.darkGray.cgColor
+        view.layer.shadowOpacity = 0.5
         view.backgroundColor = .white
         return view
     }()
     
     init() {
         self.expandedHeight = 0.8 * (screenHeight - 110)
+        self.normalHeight = max(0.4 * (screenHeight - 110), 210)
         super.init(frame: .zero)
+        self.isUserInteractionEnabled = true
         setupLayout()
         bindActions()
     }
@@ -65,31 +69,34 @@ class PostOnView: UIView {
     }
     
     private func bindActions() {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
-        dragIndicatorView.isUserInteractionEnabled = true
-        dragIndicatorView.addGestureRecognizer(panGesture)
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(viewPanned(_:)))
+        self.addGestureRecognizer(panGesture)
     }
     
-    // MARK: Handle Dragging
-    @objc private func didPan(_ recognizer: UIPanGestureRecognizer) {
-        let translation = recognizer.translation(in: self)
-        let newHeight = max(closedHeight, min(expandedHeight, self.frame.height - translation.y))
+    @objc private func viewPanned(_ panGestureRecognizer: UIPanGestureRecognizer) {
+        let velocity = panGestureRecognizer.velocity(in: self).y
+        let translation = panGestureRecognizer.translation(in: self).y
         
-        switch recognizer.state {
+        let newHeight = max(closedHeight, min(expandedHeight, self.frame.height - (translation - lastPanTranslation)))
+        
+        switch panGestureRecognizer.state {
         case .changed:
-            heightConstraint?.update(offset: newHeight)
-            recognizer.setTranslation(.zero, in: self)
-            UIView.animate(withDuration: 0.1) {
-                self.layoutIfNeeded()
+            if abs(translation - lastPanTranslation) > 2 {
+                controlViewHeight(height: newHeight)
+                lastPanTranslation = translation
             }
         case .ended, .cancelled:
-            snapToNearestHeight(newHeight)
+            lastPanTranslation = 0
+            if abs(velocity) > 700 {
+                setState(velocity < 0 ? .expanded : .closed)
+            } else {
+                snapToNearestHeight(newHeight)
+            }
         default:
             break
         }
     }
     
-    // MARK: Snap to Nearest Height
     private func snapToNearestHeight(_ currentHeight: CGFloat) {
         let distances: [(state: PostOnViewState, height: CGFloat)] = [
             (.expanded, expandedHeight),
@@ -102,11 +109,10 @@ class PostOnView: UIView {
         }
     }
 
-    // MARK: Set State with Animation
     func setState(_ state: PostOnViewState) {
-        currentState = state
-        let targetHeight: CGFloat
+        stateRelay.accept(state)
         
+        let targetHeight: CGFloat
         switch state {
         case .expanded:
             targetHeight = expandedHeight
@@ -117,10 +123,16 @@ class PostOnView: UIView {
         }
         
         DispatchQueue.main.async {
-            self.heightConstraint?.update(offset: targetHeight)
-            UIView.animate(withDuration: 0.2) {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                self.controlViewHeight(height: targetHeight)
                 self.layoutIfNeeded()
-            }
+            })
+        }
+    }
+    
+    private func controlViewHeight(height: CGFloat) {
+        self.snp.updateConstraints { make in
+            make.height.equalTo(height)
         }
     }
 }

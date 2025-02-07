@@ -64,6 +64,7 @@ class MainView: UIView {
         makeNavigationBarItems()
         setupLayout()
         bindActions()
+        observePostOnViewState()
     }
     
     required init?(coder: NSCoder) {
@@ -176,23 +177,49 @@ class MainView: UIView {
     }
     // MARK: Control PostOnView
     private func controlPostOnView() {
-        postOnView.snp.updateConstraints { make in
-            make.height.equalTo(210)
-        }
+//        let screenHeight = UIScreen.main.bounds.height
+//        let normalHeight = max(0.4 * (screenHeight - 110), 210)
+//        postOnView.snp.updateConstraints { make in
+//            make.height.equalTo(normalHeight)
+//        }
+        postOnView.setState(.normal)
         UIView.animate(withDuration: 0.2) {
             self.layoutIfNeeded()
         }
     }
 
     private func closePostOnView() {
-        postOnView.snp.updateConstraints { make in
-            make.height.equalTo(50)
-        }
+//        postOnView.snp.updateConstraints { make in
+//            make.height.equalTo(100)
+//        }
+        postOnView.setState(.closed)
         UIView.animate(withDuration: 0.2) {
             self.layoutIfNeeded()
         }
     }
-
+    
+    private func observePostOnViewState() {
+        postOnView.currentState
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] state in
+                self?.handleStateChange(state)
+            })
+            .disposed(by: disposeBag)
+    }
+        
+    // Handle PostOnView state changes
+    private func handleStateChange(_ state: PostOnViewState) {
+        switch state {
+        case .expanded:
+            print("(MainView) : PostOnView is Expanded")
+        case .normal:
+            print("(MainView) : PostOnView is in Normal state")
+        case .closed:
+            print("(MainView) : PostOnView is Closed")
+            self.currentViewName = "Home"
+            updateNavigationBarItems(with: self.currentViewName)
+        }
+    }
     
     // MARK: Control ProfileView
     private func controlProfileView() {
