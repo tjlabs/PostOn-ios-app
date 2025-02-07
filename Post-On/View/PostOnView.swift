@@ -10,7 +10,7 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
     let screenHeight = UIScreen.main.bounds.height
     let expandedHeight: CGFloat
     let normalHeight: CGFloat
-    let closedHeight: CGFloat = 100
+    let closedHeight: CGFloat = 108
     
     private var lastPanTranslation: CGFloat = 0
     private let stateRelay = BehaviorRelay<PostOnViewState>(value: .normal)
@@ -21,7 +21,7 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
     // MARK: Collection View Cell
     var sectorCellItemList = [SectorCellItem]()
     
-    private var dragIndicatorView: UIView = {
+    var dragIndicatorView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 3
         view.backgroundColor = .darkGray
@@ -52,6 +52,13 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
         collectionView.register(PostOnSectorCell.self, forCellWithReuseIdentifier: PostOnSectorCell.reuseIdentifier)
         
         return collectionView
+    }()
+    
+    private let locationImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "ic_my_location")
+        imageView.contentMode = .scaleAspectFit
+        return imageView
     }()
     
     init() {
@@ -85,6 +92,13 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(dragIndicatorView.snp.bottom).offset(5)
             make.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        addSubview(locationImageView)
+        locationImageView.snp.makeConstraints{ make in
+            make.width.height.equalTo(44)
+            make.trailing.equalToSuperview().inset(5)
+            make.bottom.equalTo(containerView.snp.top)
         }
     }
     
@@ -183,7 +197,6 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width
         let height: CGFloat = 111
-//        print("(PostOnView) : cellSize = (\(width),\(height))")
         return CGSize(width: width, height: height)
     }
 }

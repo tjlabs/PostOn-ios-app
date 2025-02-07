@@ -85,7 +85,7 @@ class MainView: UIView {
         containerView.addSubview(postOnView)
         postOnView.snp.makeConstraints{ make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.height.equalTo(50)
+            make.height.equalTo(108)
         }
         
         containerView.addSubview(bottomNavigationView)
