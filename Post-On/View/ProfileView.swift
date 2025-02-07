@@ -244,10 +244,8 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
         if name.isEmpty {
             nameContainerView.layer.borderColor = UIColor(hex: "#AAAAAA").cgColor
         } else if isValid {
-            // Valid state
             nameContainerView.layer.borderColor = UIColor.systemGreen.cgColor
         } else {
-            // Invalid state
             nameContainerView.layer.borderColor = UIColor.systemRed.cgColor
         }
         
@@ -255,7 +253,7 @@ class ProfileView: UIView, ProfileImageSelectDelegate {
     }
         
     private func validateName(_ name: String) -> Bool {
-        // 2-12 characters, no spaces or special characters
+        // MARK: 2-12 characters, no spaces or special characters
         let regex = "^[a-zA-Z0-9가-힣]{2,12}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         return predicate.evaluate(with: name)

@@ -146,7 +146,7 @@ class MainView: UIView {
                     self.profileView?.removeFromSuperview()
                 }
                 updateNavigationBarItems(with: title)
-                print("Home tapped")
+                print("(MainView) : Home tapped")
             case "Post-On":
                 if currentViewName == "Home" {
                     // Home -> Post-On
@@ -158,7 +158,7 @@ class MainView: UIView {
                     controlPostOnView()
                 }
                 updateNavigationBarItems(with: title)
-                print("Post-On tapped")
+                print("(MainView) : Post-On tapped")
             case "Profile":
                 if currentViewName == "Home" {
                     // Home -> Profile
@@ -168,7 +168,7 @@ class MainView: UIView {
                 }
                 updateNavigationBarItems(with: title)
                 self.controlProfileView()
-                print("Profile tapped")
+                print("(MainView) : Profile tapped")
             default:
                 print("Unknown navigation item tapped")
             }
@@ -206,7 +206,6 @@ class MainView: UIView {
         case .normal:
             print("(MainView) : PostOnView is in Normal state")
         case .closed:
-            print("(MainView) : PostOnView is Closed")
             self.currentViewName = "Home"
             updateNavigationBarItems(with: self.currentViewName)
         }
