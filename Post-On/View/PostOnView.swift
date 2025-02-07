@@ -8,8 +8,6 @@ enum PostOnViewState {
     case expanded, closed, normal
 }
 
-import RxRelay
-
 class PostOnView: UIView {
     private let disposeBag = DisposeBag()
     
