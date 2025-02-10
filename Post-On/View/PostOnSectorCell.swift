@@ -134,14 +134,18 @@ class PostOnSectorCell: UICollectionViewCell {
     }
     
     func configure(data: SectorCellItem) {
-        let placeholderImage = UIImage(named: "ic_placeholder")
-        sectorImageView.image = placeholderImage
-        
-        titleLabel.text = data.title
-        let messageColor = data.available ? UIColor(hex: "#46B1E1") : UIColor(hex: "#AF3228")
-        messageLabel.text = data.message
-        messageLabel.textColor = messageColor
-        distanceLabel.text = "\(data.distance)m 떨어짐"
-        addressLabel.text = data.address
+        if data.title == "EMPTY" && data.address == "EMPTY" {
+            self.isHidden = true
+        } else {
+            let placeholderImage = UIImage(named: "ic_placeholder")
+            sectorImageView.image = placeholderImage
+            
+            titleLabel.text = data.title
+            let messageColor = data.available ? UIColor(hex: "#46B1E1") : UIColor(hex: "#AF3228")
+            messageLabel.text = data.message
+            messageLabel.textColor = messageColor
+            distanceLabel.text = "\(data.distance)m 떨어짐"
+            addressLabel.text = data.address
+        }
     }
 }

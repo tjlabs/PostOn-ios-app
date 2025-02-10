@@ -171,9 +171,15 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
     }
     
     func updateSectorCellItemList() {
-        let item = SectorCellItem(title: "COEX", available: true, message: "입장 가능 여부", distance: 10, address: "Samsung-ro")
-        self.sectorCellItemList.append(contentsOf: Array(repeating: item, count: 6))
+        let item = SectorCellItem(title: "TipsTown", available: true, message: "입장 가능", distance: 10, address: "Yeoksom-ro")
+        let item2 = SectorCellItem(title: "COEX", available: false, message: "입장 불가", distance: 1000, address: "Samsung-ro")
+        let item3 = SectorCellItem(title: "Test", available: false, message: "입장 불가", distance: 100000, address: "Unknown-ro")
+        self.sectorCellItemList.append(item)
+        self.sectorCellItemList.append(item2)
+        self.sectorCellItemList.append(contentsOf: Array(repeating: item3, count: 3))
         
+        let emptyCell = SectorCellItem(title: "EMPTY", available: false, message: "비활성화", distance: 0, address: "EMPTY")
+        self.sectorCellItemList.append(emptyCell)
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             self.collectionView.layoutIfNeeded()
