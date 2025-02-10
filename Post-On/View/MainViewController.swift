@@ -11,6 +11,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        PostOnView.parentViewController = self
         setupLayout()
         checkInitialUser()
     }

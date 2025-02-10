@@ -12,5 +12,8 @@ class PostOnViewController: UIViewController {
         super.viewDidLoad()
 
     }
-
+    
+    func goToBack() {
+        
+    }
 }

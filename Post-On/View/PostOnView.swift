@@ -1,3 +1,4 @@
+
 import UIKit
 import SnapKit
 import RxCocoa
@@ -6,6 +7,8 @@ import RxRelay
 
 class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private let disposeBag = DisposeBag()
+    
+    static var parentViewController: UIViewController?
     
     let screenHeight = UIScreen.main.bounds.height
     let expandedHeight: CGFloat
@@ -185,6 +188,19 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
             self.collectionView.layoutIfNeeded()
         }
     }
+    private func goToPostOnVC(sectorCell: SectorCellItem) {
+        guard let parentVC = PostOnView.parentViewController else {
+            print("(PostOnView) Error : Parent view controller is nil")
+            return
+        }
+
+        guard let postOnVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PostOnViewController") as? PostOnViewController else {
+            print("(PostOnView) Error : Failed to instantiate PostOnViewController")
+            return
+        }
+        parentVC.navigationController?.pushViewController(postOnVC, animated: true)
+    }
+
     
     //MARK: CollectionView
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -197,6 +213,13 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
         cell.configure(data: item)
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let item = self.sectorCellItemList[indexPath.row]
+        if item.available {
+            self.goToPostOnVC(sectorCell: item)
+        }
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
