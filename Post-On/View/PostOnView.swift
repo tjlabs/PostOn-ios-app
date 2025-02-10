@@ -198,6 +198,7 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
             print("(PostOnView) Error : Failed to instantiate PostOnViewController")
             return
         }
+        postOnVC.sectorCell = sectorCell
         parentVC.navigationController?.pushViewController(postOnVC, animated: true)
     }
 
