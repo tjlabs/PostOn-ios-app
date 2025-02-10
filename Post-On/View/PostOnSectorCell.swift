@@ -134,7 +134,7 @@ class PostOnSectorCell: UICollectionViewCell {
     }
     
     func configure(data: SectorCellItem) {
-        if data.title == "EMPTY" && data.address == "EMPTY" {
+        if data.title == "EMPTY" && data.message == "EMPTY" && data.address == "EMPTY" {
             self.isHidden = true
         } else {
             self.isHidden = false

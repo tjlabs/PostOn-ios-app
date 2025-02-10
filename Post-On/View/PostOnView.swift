@@ -181,7 +181,7 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
         self.sectorCellItemList.append(item2)
         self.sectorCellItemList.append(contentsOf: Array(repeating: item3, count: 3))
         
-        let emptyCell = SectorCellItem(title: "EMPTY", available: false, message: "비활성화", distance: 0, address: "EMPTY")
+        let emptyCell = SectorCellItem(title: "EMPTY", available: false, message: "EMPTY", distance: 0, address: "EMPTY")
         self.sectorCellItemList.append(emptyCell)
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -219,6 +219,8 @@ class PostOnView: UIView, UICollectionViewDataSource, UICollectionViewDelegate, 
         let item = self.sectorCellItemList[indexPath.row]
         if item.available {
             self.goToPostOnVC(sectorCell: item)
+        } else {
+            // TODO
         }
     }
     
