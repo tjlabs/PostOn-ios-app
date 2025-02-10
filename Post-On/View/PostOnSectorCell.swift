@@ -137,6 +137,7 @@ class PostOnSectorCell: UICollectionViewCell {
         if data.title == "EMPTY" && data.address == "EMPTY" {
             self.isHidden = true
         } else {
+            self.isHidden = false
             let placeholderImage = UIImage(named: "ic_placeholder")
             sectorImageView.image = placeholderImage
             
