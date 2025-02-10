@@ -25,6 +25,21 @@
             </objects>
             <point key="canvasLocation" x="-193" y="-35"/>
         </scene>
+        <!--Post On View Controller-->
+        <scene sceneID="lyl-bI-uLa">
+            <objects>
+                <viewController storyboardIdentifier="PostOnViewController" id="VrP-3Z-HNa" customClass="PostOnViewController" customModule="Post_On" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QcV-Gi-2dM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="3uU-fr-IV9"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IYm-hV-XWa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="599" y="-35"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="mbR-tM-cmn">
             <objects>
