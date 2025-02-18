@@ -10,7 +10,6 @@ target 'Post-On' do
   pod 'Then' 
   pod 'RxSwift', '~> 6.5.0'
   pod 'RxCocoa', '~> 6.5.0'
-  pod 'NMapsMap'
   
   target 'Post-OnTests' do
     inherit! :search_paths

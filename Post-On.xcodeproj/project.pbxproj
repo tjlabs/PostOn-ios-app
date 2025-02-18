@@ -10,6 +10,7 @@
 		3C70B97097BAC434C8DB9DE5 /* Pods_Post_On_Post_OnUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10715E3D3E7AC5990A6CC720 /* Pods_Post_On_Post_OnUITests.framework */; };
 		400CC83729440B6B44EDEC4D /* Pods_Post_OnTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E5C33FBB3175117F0E22E13 /* Pods_Post_OnTests.framework */; };
 		6C79FF692883FD82703BF2DA /* Pods_Post_On.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59BFE94E54CAE7D48E389446 /* Pods_Post_On.framework */; };
+		B3FEFDEC2D643E08000976C4 /* NMaps-iOS-SPM in Frameworks */ = {isa = PBXBuildFile; productRef = B3FEFDEB2D643E08000976C4 /* NMaps-iOS-SPM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C79FF692883FD82703BF2DA /* Pods_Post_On.framework in Frameworks */,
+				B3FEFDEC2D643E08000976C4 /* NMaps-iOS-SPM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +252,9 @@
 			);
 			mainGroup = B3EA85242D36462300372790;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B3FEFD9D2D64351D000976C4 /* XCRemoteSwiftPackageReference "NMaps-sdk-spm" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = B3EA852E2D36462300372790 /* Products */;
 			projectDirPath = "";
@@ -738,6 +743,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B3FEFD9D2D64351D000976C4 /* XCRemoteSwiftPackageReference "NMaps-sdk-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tjlabs/NMaps-sdk-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B3FEFDEB2D643E08000976C4 /* NMaps-iOS-SPM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B3FEFD9D2D64351D000976C4 /* XCRemoteSwiftPackageReference "NMaps-sdk-spm" */;
+			productName = "NMaps-iOS-SPM";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B3EA85252D36462300372790 /* Project object */;
 }

@@ -1,0 +1,15 @@
+{
+  "originHash" : "c2a4ff6aea6283042351b4a427af3add4c3e4e3c5b877e0da3ad1d8194c7cfb9",
+  "pins" : [
+    {
+      "identity" : "nmaps-sdk-spm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tjlabs/NMaps-sdk-spm.git",
+      "state" : {
+        "revision" : "a5bbdf814f435568ca859acd76bffd4439fcba5c",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
