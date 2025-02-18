@@ -40,7 +40,7 @@ class PostOnViewController: UIViewController {
     }
     
     private func setupTitle() {
-        self.titleLabel.text = self.sectorCell?.title
+//        self.titleLabel.text = self.sectorCell?.title
         self.titleLabel.textColor = .white
         self.titleLabel.font = UIFont.lemonRegular(size: 20)
         self.titleLabel.layer.shadowOpacity = 0.5
